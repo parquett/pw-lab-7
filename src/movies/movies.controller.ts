@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -19,7 +19,7 @@ export class MoviesController {
   @ApiOperation({ summary: 'Get all movies' })
   async getMovies() {
     try {
-      return await this.moviesService.findAll(1, 10);
+      return await this.moviesService.findAll();
     } catch (error) {
       console.error('Error fetching movies:', error);
       throw error;

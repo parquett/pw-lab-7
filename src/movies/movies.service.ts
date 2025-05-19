@@ -28,7 +28,7 @@ export class MoviesService {
     await fs.writeFile(this.filePath, JSON.stringify(this.movies, null, 2));
   }
 
-  async findAll(page: number, limit: number) {
+  async findAll() {
     return this.movies;
   }
 

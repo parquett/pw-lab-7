@@ -13,7 +13,7 @@ export class AuthService {
 
     return {
       token: this.jwtService.sign(payload),
-      expiresIn: 60, // 1 minute
+      expiresIn: 600, // 1- minute
     };
   }
 

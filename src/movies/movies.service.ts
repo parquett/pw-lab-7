@@ -1,16 +1,34 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Movie } from '../models/movie.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 
 @Injectable()
 export class MoviesService {
+  private readonly filePath = path.join(process.cwd(), 'data', 'movies.json');
   private movies: Movie[] = [];
 
-  async findAll(page: number, limit: number) {
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
+  constructor() {
+    this.initStorage();
+  }
 
-    // Return just the array instead of pagination object
+  private async initStorage() {
+    try {
+      await fs.mkdir(path.join(process.cwd(), 'data'), { recursive: true });
+      const data = await fs.readFile(this.filePath, 'utf8');
+      this.movies = JSON.parse(data);
+    } catch (error) {
+      this.movies = [];
+      await this.saveToFile();
+    }
+  }
+
+  private async saveToFile() {
+    await fs.writeFile(this.filePath, JSON.stringify(this.movies, null, 2));
+  }
+
+  async findAll(page: number, limit: number) {
     return this.movies;
   }
 
@@ -30,6 +48,7 @@ export class MoviesService {
       updatedAt: new Date(),
     };
     this.movies.push(newMovie);
+    await this.saveToFile();
     return newMovie;
   }
 
@@ -44,6 +63,7 @@ export class MoviesService {
       ...movieData,
     };
 
+    await this.saveToFile();
     return this.movies[index];
   }
 
@@ -53,5 +73,6 @@ export class MoviesService {
       throw new NotFoundException(`Movie with ID ${id} not found`);
     }
     this.movies.splice(index, 1);
+    await this.saveToFile();
   }
 }

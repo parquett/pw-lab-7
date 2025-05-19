@@ -43,14 +43,14 @@ export class MoviesController {
   @Put(':id')
   @Permissions('UPDATE')
   @ApiOperation({ summary: 'Update a movie' })
-  async updateMovie(@Param('id') id: number, @Body() movie: Partial<Movie>) {
-    return this.moviesService.update(id, movie);
+  async updateMovie(@Param('id') id: string, @Body() movie: Partial<Movie>) {
+    return this.moviesService.update(Number(id), movie);
   }
 
   @Delete(':id')
   @Permissions('DELETE')
   @ApiOperation({ summary: 'Delete a movie' })
-  async deleteMovie(@Param('id') id: number) {
-    return this.moviesService.delete(id);
+  async deleteMovie(@Param('id') id: string) {
+    return this.moviesService.delete(Number(id));
   }
 }

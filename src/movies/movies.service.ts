@@ -32,14 +32,6 @@ export class MoviesService {
     return this.movies;
   }
 
-  async findOne(id: number) {
-    const movie = this.movies.find(m => m.id === id);
-    if (!movie) {
-      throw new NotFoundException(`Movie with ID ${id} not found`);
-    }
-    return movie;
-  }
-
   async create(movie: CreateMovieDto) {
     const newMovie = {
       ...movie,

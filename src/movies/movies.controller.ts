@@ -15,6 +15,7 @@ export class MoviesController {
   constructor(private moviesService: MoviesService) {}
 
   @Get()
+  @Permissions('READ')
   @ApiOperation({ summary: 'Get all movies' })
   async getMovies() {
     try {
